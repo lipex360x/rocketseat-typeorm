@@ -1,15 +1,31 @@
 import Product from '../infra/typeorm/entities/Product';
 
-import ICreateProductDTO from '../dtos/ICreateProductDTO';
-import IUpdateProductsQuantityDTO from '../dtos/IUpdateProductsQuantityDTO';
+export interface CreateProductProps {
+  name: string;
+  price: number;
+  quantity: number;
+}
 
-interface IFindProducts {
-  id: string;
+export interface FindByNameProps {
+  name: string;
+}
+
+export interface FindProductsProps {
+  product_ids: string[];
+}
+
+interface ProductsUpdate {
+  product_id: string;
+  quantity: number;
+}
+
+export interface UpdateQuantityProps {
+  products: ProductsUpdate[];
 }
 
 export default interface IProductsRepository {
-  create(data: ICreateProductDTO): Promise<Product>;
-  findByName(name: string): Promise<Product | undefined>;
-  findAllById(products: IFindProducts[]): Promise<Product[]>;
-  updateQuantity(products: IUpdateProductsQuantityDTO[]): Promise<Product[]>;
+  create(data: CreateProductProps): Promise<Product>;
+  findByName(data: FindByNameProps): Promise<Product | undefined>;
+  findAllById(data: FindProductsProps): Promise<Product[]>;
+  updateQuantity(data: UpdateQuantityProps): Promise<Product[]>;
 }

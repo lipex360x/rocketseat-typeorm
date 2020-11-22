@@ -1,28 +1,38 @@
+import { v4 as uuid } from 'uuid';
+
 import {
-  Entity,
   Column,
-  PrimaryGeneratedColumn,
   CreateDateColumn,
   UpdateDateColumn,
-  OneToMany,
+  BeforeInsert,
+  PrimaryColumn,
+  Entity,
 } from 'typeorm';
 
-import OrdersProducts from '@modules/orders/infra/typeorm/entities/OrdersProducts';
-
+@Entity('products')
 class Product {
-  id: string;
+  @PrimaryColumn('uuid')
+  product_id: string;
 
+  @Column()
   name: string;
 
+  @Column('decimal')
   price: number;
 
+  @Column('int')
   quantity: number;
 
-  order_products: OrdersProducts[];
-
+  @CreateDateColumn()
   created_at: Date;
 
+  @UpdateDateColumn()
   updated_at: Date;
+
+  @BeforeInsert()
+  productsProps(): void {
+    this.product_id = uuid();
+  }
 }
 
 export default Product;
