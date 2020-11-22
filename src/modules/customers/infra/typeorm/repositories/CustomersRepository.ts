@@ -1,6 +1,9 @@
 import { getRepository, Repository } from 'typeorm';
 
-import ICustomersRepository from '@modules/customers/repositories/ICustomersRepository';
+import ICustomersRepository, {
+  FindByEmailProps,
+  FindByIdProps,
+} from '@modules/customers/repositories/ICustomersRepository';
 import ICreateCustomerDTO from '@modules/customers/dtos/ICreateCustomerDTO';
 import Customer from '../entities/Customer';
 
@@ -22,13 +25,17 @@ class CustomersRepository implements ICustomersRepository {
     return customer;
   }
 
-  public async findById(id: string): Promise<Customer | undefined> {
-    const findCustomer = await this.ormRepository.findOne(id);
+  public async findById({
+    customer_id,
+  }: FindByIdProps): Promise<Customer | undefined> {
+    const findCustomer = await this.ormRepository.findOne(customer_id);
 
     return findCustomer;
   }
 
-  public async findByEmail(email: string): Promise<Customer | undefined> {
+  public async findByEmail({
+    email,
+  }: FindByEmailProps): Promise<Customer | undefined> {
     const findCustomer = await this.ormRepository.findOne({
       where: {
         email,

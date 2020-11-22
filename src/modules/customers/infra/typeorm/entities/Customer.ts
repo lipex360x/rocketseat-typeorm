@@ -1,21 +1,33 @@
+import { v4 as uuid } from 'uuid';
+
 import {
   Entity,
   Column,
-  PrimaryGeneratedColumn,
   CreateDateColumn,
   UpdateDateColumn,
+  PrimaryColumn,
+  BeforeInsert,
 } from 'typeorm';
 
-class Customer {
-  id: string;
+@Entity('customers')
+export default class Customer {
+  @PrimaryColumn('uuid')
+  customer_id: string;
 
+  @Column()
   name: string;
 
+  @Column()
   email: string;
 
+  @CreateDateColumn()
   created_at: Date;
 
+  @UpdateDateColumn()
   updated_at: Date;
-}
 
-export default Customer;
+  @BeforeInsert()
+  customerProps(): void {
+    this.customer_id = uuid();
+  }
+}

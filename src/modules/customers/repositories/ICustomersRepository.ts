@@ -1,9 +1,20 @@
-import Customer from '../infra/typeorm/entities/Customer';
+import Customer from '@modules/customers/infra/typeorm/entities/Customer';
 
-import ICreateCustomerDTO from '../dtos/ICreateCustomerDTO';
+export interface CreateCustomerProps {
+  name: string;
+  email: string;
+}
+
+export interface FindByEmailProps {
+  email: string;
+}
+
+export interface FindByIdProps {
+  customer_id: string;
+}
 
 export default interface ICustomersRepository {
-  create(data: ICreateCustomerDTO): Promise<Customer>;
-  findByEmail(email: string): Promise<Customer | undefined>;
-  findById(id: string): Promise<Customer | undefined>;
+  create(data: CreateCustomerProps): Promise<Customer>;
+  findByEmail(data: FindByEmailProps): Promise<Customer | undefined>;
+  findById(data: FindByIdProps): Promise<Customer | undefined>;
 }
