@@ -1,26 +1,44 @@
+import { v4 as uuid } from 'uuid';
 import {
   Entity,
-  PrimaryGeneratedColumn,
+  Column,
+  PrimaryColumn,
   CreateDateColumn,
   UpdateDateColumn,
+  BeforeInsert,
   ManyToOne,
   JoinColumn,
   OneToMany,
 } from 'typeorm';
 
 import Customer from '@modules/customers/infra/typeorm/entities/Customer';
-import OrdersProducts from '@modules/orders/infra/typeorm/entities/OrdersProducts';
+import OrdersProducts from './OrdersProducts';
 
-class Order {
-  id: string;
+@Entity('orders')
+export default class Order {
+  @PrimaryColumn('uuid')
+  order_id: string;
 
+  @ManyToOne(() => Customer, customer => customer.order)
+  @JoinColumn({ name: 'customer_id' })
   customer: Customer;
 
-  order_products: OrdersProducts[];
+  @OneToMany(() => OrdersProducts, ordersProduct => ordersProduct.order, {
+    cascade: true,
+  })
+  ordersProduct: OrdersProducts[];
 
+  @Column('uuid')
+  customer_id: string;
+
+  @CreateDateColumn()
   created_at: Date;
 
+  @UpdateDateColumn()
   updated_at: Date;
-}
 
-export default Order;
+  @BeforeInsert()
+  orderProps(): void {
+    this.order_id = uuid();
+  }
+}

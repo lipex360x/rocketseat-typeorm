@@ -7,7 +7,9 @@ import {
   BeforeInsert,
   PrimaryColumn,
   Entity,
+  OneToMany,
 } from 'typeorm';
+import OrdersProducts from '@modules/orders/infra/typeorm/entities/OrdersProducts';
 
 @Entity('products')
 class Product {
@@ -22,6 +24,9 @@ class Product {
 
   @Column('int')
   quantity: number;
+
+  @OneToMany(() => OrdersProducts, ordersProduct => ordersProduct.product, {})
+  ordersProduct: OrdersProducts[];
 
   @CreateDateColumn()
   created_at: Date;
