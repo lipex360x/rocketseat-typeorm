@@ -1,8 +1,22 @@
+import Customer from '@modules/customers/infra/typeorm/entities/Customer';
 import Order from '../infra/typeorm/entities/Order';
 
-import ICreateOrderDTO from '../dtos/ICreateOrderDTO';
+interface IProduct {
+  product_id: string;
+  price: number;
+  quantity: number;
+}
+
+export interface CreateOrderProps {
+  customer: Customer | undefined;
+  products: IProduct[];
+}
+
+export interface FindByIdProps {
+  order_id: string;
+}
 
 export default interface IOrdersRepository {
-  create(data: ICreateOrderDTO): Promise<Order>;
-  findById(id: string): Promise<Order | undefined>;
+  create(data: CreateOrderProps): Promise<Order>;
+  findById(data: FindByIdProps): Promise<Order | undefined>;
 }

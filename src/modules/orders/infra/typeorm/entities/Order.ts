@@ -1,7 +1,6 @@
 import { v4 as uuid } from 'uuid';
 import {
   Entity,
-  Column,
   PrimaryColumn,
   CreateDateColumn,
   UpdateDateColumn,
@@ -27,9 +26,6 @@ export default class Order {
     cascade: true,
   })
   ordersProduct: OrdersProducts[];
-
-  @Column('uuid')
-  customer_id: string;
 
   @CreateDateColumn()
   created_at: Date;
